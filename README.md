@@ -15,27 +15,34 @@ Unlike traditional quizzes that try to capture your personality in one sitting, 
 ## Features
 
 ### Core Experience
+
 - ✅ **Daily personality check-in**
+
   - 3 fixed questions per day (pulled from a DB-stored question set)
   - Answers limited to a simplified scale (e.g., Agree / Neutral / Disagree)
   - Questions follow MBTI personality model dimensions
 
 - ✅ **Answer persistence and enforcement**
+
   - Strict daily limit (no backlog or catch-up)
   - Responses saved per user per day
 
 - ✅ **Authentication**
+
   - Handled via `better-auth`
 
 - ✅ **Beautiful, accessible UI**
   - Built using `shadcn-ui`
 
 ### Visualization & Insights
+
 - 📊 **Personality evolution charts**
+
   - Track progression for each MBTI axis (E/I, S/N, T/F, J/P)
   - Compare current status vs. historical baseline
 
 - 📈 **Summary & analysis views**
+
   - Current personality “diagnosis”
   - Distribution of answer types over time
 
@@ -44,7 +51,9 @@ Unlike traditional quizzes that try to capture your personality in one sitting, 
   - Show “personality volatility” or stability metrics
 
 ### Gamification (Post-MVP)
+
 - 🔥 **Streak tracking**
+
   - Daily streak UI
   - Optional reminder notifications
   - Rewards or badges (TBD)
@@ -54,7 +63,9 @@ Unlike traditional quizzes that try to capture your personality in one sitting, 
   - Long-term reflection reports
 
 ### Developer Experience
+
 - ✅ **Written with TDD using Vitest**
+
   - Emphasis on test-first development for both UI and logic
   - Maintainable, predictable codebase
 
@@ -82,3 +93,4 @@ Unlike traditional quizzes that try to capture your personality in one sitting, 
 2. Install dependencies
    ```bash
    npm install
+   ```
