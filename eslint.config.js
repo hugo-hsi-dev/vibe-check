@@ -1,10 +1,12 @@
-import prettier from 'eslint-config-prettier';
-import js from '@eslint/js';
+import perfectionist from 'eslint-plugin-perfectionist';
 import { includeIgnoreFile } from '@eslint/compat';
+import prettier from 'eslint-config-prettier';
 import svelte from 'eslint-plugin-svelte';
-import globals from 'globals';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript-eslint';
+import globals from 'globals';
+import js from '@eslint/js';
+
 import svelteConfig from './svelte.config.js';
 
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
@@ -16,6 +18,7 @@ export default ts.config(
 	...svelte.configs.recommended,
 	prettier,
 	...svelte.configs.prettier,
+	perfectionist.configs['recommended-line-length'],
 	{
 		languageOptions: {
 			globals: { ...globals.browser, ...globals.node }
@@ -23,14 +26,14 @@ export default ts.config(
 		rules: { 'no-undef': 'off' }
 	},
 	{
-		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
 		languageOptions: {
 			parserOptions: {
-				projectService: true,
 				extraFileExtensions: ['.svelte'],
 				parser: ts.parser,
+				// projectService: true,
 				svelteConfig
 			}
-		}
+		},
+		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js']
 	}
 );
