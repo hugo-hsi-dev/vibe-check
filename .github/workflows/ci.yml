@@ -48,7 +48,7 @@ jobs:
       - name: install tsgo
         run: pnpm i -D @typescript/native-preview
       - name: type check
-        run: pnpm exec tsgo --project tsconfig.runtime.json --skipLibCheck
+        run: pnpm exec tsgo --project tsconfig.json --skipLibCheck
   Lint:
     permissions: {}
     runs-on: ubuntu-latest
