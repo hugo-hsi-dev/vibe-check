@@ -28,8 +28,7 @@ updates:
       - 'dependencies'
       - 'automated'
     commit-message:
-      prefix: 'chore(deps)'
-      include: 'scope'
+      prefix: '📦'
     assignees:
       - 'hugo-hsi-dev'
 
@@ -47,6 +46,6 @@ updates:
       - 'github-actions'
       - 'automated'
     commit-message:
-      prefix: 'ci(deps)'
+      prefix: '⚙️'
     assignees:
       - 'hugo-hsi-dev'
