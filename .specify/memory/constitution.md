@@ -1,15 +1,15 @@
 <!--
   Sync Impact Report:
-  - Version: 1.0.0 → 1.1.0 (Added automation principles)
-  - Principles Added: VI. Automated CI/CD Pipeline (new)
-  - Principles Modified: V. Code Quality Standards (expanded with CI/CD integration)
-  - Sections Modified: Quality Gates (added CI/CD requirements), Governance (added solo project context)
+  - Version: 1.1.0 → 1.1.1 (Added Dependabot automation)
+  - Principles Modified: VI. Automated CI/CD Pipeline (added Dependabot requirement)
+  - Sections Modified: Security Standards (added dependency update automation), CI/CD Standards (added Dependabot config)
   - Templates Status:
-    ✅ plan-template.md - Constitution Check section aligned
-    ✅ spec-template.md - Requirements and testing sections aligned
-    ✅ tasks-template.md - Test-first workflow and quality gates aligned
+    ✅ plan-template.md - Constitution Check section aligned (no changes needed)
+    ✅ spec-template.md - Requirements and testing sections aligned (no changes needed)
+    ✅ tasks-template.md - Test-first workflow and quality gates aligned (no changes needed)
+  - Files Created: .github/dependabot.yml
   - Deferred Items: None
-  - Rationale: MINOR version bump - new principle added for CI/CD automation and AI-powered PR reviews
+  - Rationale: PATCH version bump - operational enhancement to existing CI/CD principle, no new principles
 -->
 
 # Vibe Check Constitution
@@ -108,6 +108,8 @@ All code changes MUST pass through automated continuous integration and deployme
 - CI pipeline MUST verify code coverage thresholds (≥ 80%)
 - CI pipeline MUST build the application in production mode
 - All CI checks MUST pass before merge is allowed (branch protection rules)
+- Dependabot MUST be configured to automatically create PRs for dependency updates
+- Dependabot PRs MUST be reviewed and merged within 7 days (security updates within 24 hours)
 - Claude Code (or equivalent AI) MUST review all pull requests for:
   - Constitutional compliance (all 6 principles)
   - Code quality and maintainability
@@ -157,7 +159,9 @@ All code changes MUST pass through automated continuous integration and deployme
 - All authentication MUST use industry-standard libraries
 - All sensitive data MUST be encrypted at rest
 - All API endpoints MUST have rate limiting
-- All dependencies MUST be kept up to date (security patches)
+- All dependencies MUST be kept up to date (automated via Dependabot)
+- Security vulnerability PRs from Dependabot MUST be reviewed within 24 hours
+- Dependency updates MUST pass all CI checks before merging
 
 ### CI/CD Standards
 
@@ -170,6 +174,10 @@ All code changes MUST pass through automated continuous integration and deployme
 - Secrets and environment variables MUST use GitHub Secrets
 - Deployment workflows MUST require manual approval for production
 - All workflows MUST have timeout limits to prevent runaway builds
+- Dependabot MUST be configured in `.github/dependabot.yml`
+- Dependabot MUST check for npm dependency updates daily
+- Dependabot MUST check for GitHub Actions updates weekly
+- Dependabot PRs MUST trigger all CI checks automatically
 
 ## Quality Gates
 
@@ -242,4 +250,4 @@ This constitution supersedes all other development practices and conventions. As
 - Merge only after all checks pass
 - Monitor deployment and production metrics
 
-**Version**: 1.1.0 | **Ratified**: 2025-10-17 | **Last Amended**: 2025-10-17
+**Version**: 1.1.1 | **Ratified**: 2025-10-17 | **Last Amended**: 2025-10-17

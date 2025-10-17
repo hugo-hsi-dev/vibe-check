@@ -1,0 +1,57 @@
+# Dependabot configuration for automatic dependency updates
+# Constitution v1.1.1 - Principle VI: Automated CI/CD Pipeline
+
+version: 2
+updates:
+  # npm dependencies - check daily
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    # Group minor and patch updates together to reduce PR noise
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+    # Always create individual PRs for major updates and security patches
+    labels:
+      - "dependencies"
+      - "automated"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    # Review security updates immediately
+    reviewers:
+      - "hugo-hsi-dev"
+    assignees:
+      - "hugo-hsi-dev"
+
+  # GitHub Actions - check weekly
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "automated"
+    commit-message:
+      prefix: "ci(deps)"
+    reviewers:
+      - "hugo-hsi-dev"
+    assignees:
+      - "hugo-hsi-dev"
