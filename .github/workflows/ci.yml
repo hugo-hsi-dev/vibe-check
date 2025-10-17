@@ -46,9 +46,9 @@ jobs:
       - name: install
         run: pnpm install --frozen-lockfile
       - name: install tsgo
-        run: cd packages/svelte && pnpm i -D @typescript/native-preview
+        run: pnpm i -D @typescript/native-preview
       - name: type check
-        run: cd packages/svelte && pnpm check:tsgo
+        run: pnpm check:tsgo
   Lint:
     permissions: {}
     runs-on: ubuntu-latest
@@ -70,16 +70,3 @@ jobs:
       - name: build and check generated types
         if: (${{ success() }} || ${{ failure() }}) # ensures this step runs even if previous steps fail
         run: pnpm build && { [ "`git status --porcelain=v1`" == "" ] || (echo "Generated types have changed — please regenerate types locally with `cd packages/svelte && pnpm generate:types` and commit the changes after you have reviewed them"; git diff; exit 1); }
-  Benchmarks:
-    permissions: {}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm bench
