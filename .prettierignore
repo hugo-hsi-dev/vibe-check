@@ -12,3 +12,4 @@ bun.lockb
 # AI
 /.claude/
 /.specify/
+/specs/
