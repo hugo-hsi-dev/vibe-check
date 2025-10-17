@@ -11,10 +11,11 @@ env:
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
 
 jobs:
-  Tests:
+  UnitTests:
+    name: Unit Tests
     permissions: {}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -24,8 +25,23 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm playwright install chromium
-      - run: pnpm test
-  TypeCheck:
+      - run: pnpm test:unit
+  E2ETests:
+    name: E2E Tests
+    permissions: {}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm playwright install chromium
+      - run: pnpm test:e2e
+  Check:
     permissions: {}
     runs-on: ubuntu-latest
     timeout-minutes: 5
