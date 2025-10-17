@@ -1,38 +1,109 @@
-# sv
+# Vibe Check
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A daily personality tracking PWA built with SvelteKit that helps users understand their personality trends over time through quick daily quizzes.
 
-## Creating a project
+## Tech Stack
 
-If you're seeing this, you've probably already done this step. Congrats!
+- **Framework**: SvelteKit 2.43+ with experimental remote functions
+- **Frontend**: Svelte 5.39+ (runes mode)
+- **Database**: PostgreSQL via Drizzle ORM 0.44+
+- **PWA**: vite-pwa with Workbox
+- **Testing**: 
+  - Unit tests: Vitest 3.2+
+  - Component tests: vitest-browser-svelte 1.1+ (Vitest browser mode)
+  - E2E tests: Playwright 1.55+
+- **Deployment**: Adapter-node for Dokploy
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (latest LTS)
+- PostgreSQL database
+- pnpm (recommended)
+
+### Installation
 
 ```sh
-# create a new project in the current directory
-npx sv create
+# install dependencies
+pnpm install
 
-# create a new project in my-app
-npx sv create my-app
+# set up environment variables
+cp .env.example .env
+# Edit .env with your database credentials
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Development
 
 ```sh
-npm run dev
+# start development server
+pnpm dev
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+# or open in browser automatically
+pnpm dev --open
+```
+
+### Testing
+
+```sh
+# run unit tests
+pnpm test:unit
+
+# run E2E tests
+pnpm test:e2e
+
+# run all tests
+pnpm test
+```
+
+### Code Quality
+
+```sh
+# type check
+pnpm check
+
+# lint
+pnpm lint
+
+# format
+pnpm format
 ```
 
 ## Building
 
-To create a production version of your app:
+To create a production version:
 
 ```sh
-npm run build
+pnpm build
 ```
 
-You can preview the production build with `npm run preview`.
+Preview the production build:
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```sh
+pnpm preview
+```
+
+## Project Structure
+
+This project follows the [Vibe Check Constitution](.specify/memory/constitution.md) which defines our core principles:
+
+- Type Safety First
+- Test-First Development (80%+ coverage)
+- User Experience Consistency (WCAG 2.1 AA)
+- Performance Standards (LCP < 2.5s, FID < 100ms, CLS < 0.1)
+- Code Quality Standards (ESLint, Prettier)
+- Automated CI/CD Pipeline
+
+## Contributing
+
+All changes must go through pull requests. Branch protection is enabled on `main` requiring:
+
+- 6 status checks to pass (unit tests, E2E tests, check, format, lint, build)
+- Code review approval
+- Verified commit signatures
+
+See the [Feature Specification](specs/001-daily-personality-tracker/spec.md) for detailed user stories and requirements.
+
+## License
+
+MIT
