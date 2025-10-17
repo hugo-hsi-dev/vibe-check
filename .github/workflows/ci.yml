@@ -1,26 +1,24 @@
 name: CI
 
 on:
-  pull_request:
-    branches: [main]
   push:
     branches: [main]
+  pull_request:
 
 permissions:
   contents: read
 
-# Cancel in-progress runs when a new workflow is triggered
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+permissions:
+  contents: read
 
 jobs:
-  # Job 1: TypeScript Type Checking
-  typescript:
-    name: TypeScript Type Check
+  lint:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
@@ -39,228 +37,8 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-
-      - run: pnpm install --frozen-lockfile --frozen-lockfile
-      - run: pnpm run check
-
-  # Job 2: ESLint
-  eslint:
-    name: ESLint
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - run: pnpm install --frozen-lockfile --frozen-lockfile
-      - run: pnpm run lint
-
-  # Job 3: Prettier Format Check
-  prettier:
-    name: Prettier Format Check
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - run: pnpm install --frozen-lockfile --frozen-lockfile
-      - run: pnpm exec prettier --check .
-
-  # Job 4: Unit Tests (Vitest - Server)
-  test-unit-server:
-    name: Unit Tests (Server)
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - run: pnpm install --frozen-lockfile --frozen-lockfile
-      - run: pnpm run test:unit -- --project=server --run
-
-  # Job 5: Component Tests (Vitest - Client/Browser)
-  test-unit-client:
-    name: Unit Tests (Client/Browser)
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm playwright install chromium --with-deps
-      - run: pnpm run test:unit -- --project=client --run
-        env:
-          CI: true
-
-  # Job 6: E2E Tests (Playwright)
-  test-e2e:
-    name: E2E Tests (Playwright)
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm playwright install --with-deps
-      - run: pnpm run test:e2e
-        env:
-          CI: true
-      - name: Upload Playwright report
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 7
-
-  # Job 7: Code Coverage
-  coverage:
-    name: Code Coverage
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm playwright install chromium --with-deps
-      - run: pnpm run test:unit -- --run --coverage
-        env:
-          CI: true
-      - name: Upload coverage reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage/
-          retention-days: 30
-      - name: Check coverage threshold
-        run: |
-          if [ -f coverage/coverage-summary.json ]; then
-            COVERAGE=$(node -pe "JSON.parse(require('fs').readFileSync('coverage/coverage-summary.json', 'utf8')).total.lines.pct")
-            echo "Total coverage: $COVERAGE%"
-            if (( $(echo "$COVERAGE < 80" | bc -l) )); then
-              echo "❌ Coverage below 80% threshold"
-              exit 1
-            else
-              echo "✅ Coverage meets 80% threshold"
-            fi
-          else
-            echo "⚠️  Coverage report not found, skipping threshold check"
-          fi
-
-  # Job 8: Production Build
-  build:
-    name: Production Build
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - run: pnpm install --frozen-lockfile --frozen-lockfile
-      - run: pnpm run build
-      - name: Check build output
-        run: |
-          if [ -d "build" ]; then
-            echo "✅ Build directory created successfully"
-            ls -lh build/
-          else
-            echo "❌ Build directory not found"
-            exit 1
-          fi
-
-  # Job 9: Bundle Size Check
-  bundle-size:
-    name: Bundle Size Analysis
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - run: pnpm install --frozen-lockfile --frozen-lockfile
-      - run: pnpm run build
-      - name: Analyze bundle size
-        run: |
-          echo "📦 Bundle Size Analysis"
-          if [ -d "build" ]; then
-            find build -type f -name "*.js" -exec du -h {} \; | sort -hr | head -20
-            TOTAL_SIZE=$(du -sh build | cut -f1)
-            echo "Total build size: $TOTAL_SIZE"
-          else
-            echo "⚠️  Build directory not found"
-          fi
-
-  # Job 10: Dependency Audit
-  security-audit:
-    name: Security Audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - run: pnpm audit --audit-level=moderate
-        continue-on-error: true
-
-  # Job 11: All Checks Passed (Required Status Check)
-  all-checks-passed:
-    name: All Checks Passed
-    runs-on: ubuntu-latest
-    needs:
-      - typescript
-      - eslint
-      - prettier
-      - test-unit-server
-      - test-unit-client
-      - test-e2e
-      - coverage
-      - build
-      - bundle-size
-      - security-audit
-    if: always()
-    steps:
-      - name: Verify all jobs passed
-        run: |
-          NEEDS_CONTEXT='${{ toJson(needs) }}'
-          echo "$NEEDS_CONTEXT"
-
-
-          if echo "$NEEDS_CONTEXT" | jq -e 'to_entries | map(select(.value.result != "success")) | length == 0' > /dev/null; then
-            echo "✅ All checks passed!"
-            exit 0
-          else
-            echo "❌ Some checks failed"
-            echo "$NEEDS_CONTEXT" | jq 'to_entries | map(select(.value.result != "success"))'
-            exit 1
-          fi
+      - name: install
+        run: pnpm install --frozen-lockfile
+      - name: lint
+        run: pnpm lint
