@@ -1,13 +1,15 @@
 <!--
   Sync Impact Report:
-  - Version: NEW → 1.0.0 (Initial constitution ratification)
-  - Principles Added: All 5 core principles established
-  - Sections Added: Core Principles, Development Standards, Quality Gates, Governance
+  - Version: 1.0.0 → 1.1.0 (Added automation principles)
+  - Principles Added: VI. Automated CI/CD Pipeline (new)
+  - Principles Modified: V. Code Quality Standards (expanded with CI/CD integration)
+  - Sections Modified: Quality Gates (added CI/CD requirements), Governance (added solo project context)
   - Templates Status:
     ✅ plan-template.md - Constitution Check section aligned
     ✅ spec-template.md - Requirements and testing sections aligned
     ✅ tasks-template.md - Test-first workflow and quality gates aligned
   - Deferred Items: None
+  - Rationale: MINOR version bump - new principle added for CI/CD automation and AI-powered PR reviews
 -->
 
 # Vibe Check Constitution
@@ -92,6 +94,35 @@ All code MUST pass linting and formatting checks. Code reviews MUST verify adher
 - All magic numbers MUST be named constants
 - All technical debt MUST be tracked with TODO comments including rationale
 
+### VI. Automated CI/CD Pipeline
+
+All code changes MUST pass through automated continuous integration and deployment pipelines. GitHub Actions MUST enforce all quality gates automatically, and AI-powered code review MUST supplement human review.
+
+**Rationale**: Automation ensures consistent enforcement of quality standards, reduces human error, catches issues early, and enables solo developers to maintain production-grade quality without manual overhead.
+
+**Non-negotiable rules**:
+- GitHub Actions workflow MUST run on all pull requests
+- CI pipeline MUST execute all tests (unit, component, E2E)
+- CI pipeline MUST verify linting and formatting (ESLint + Prettier)
+- CI pipeline MUST check TypeScript compilation
+- CI pipeline MUST verify code coverage thresholds (≥ 80%)
+- CI pipeline MUST build the application in production mode
+- All CI checks MUST pass before merge is allowed (branch protection rules)
+- Claude Code (or equivalent AI) MUST review all pull requests for:
+  - Constitutional compliance (all 6 principles)
+  - Code quality and maintainability
+  - Security vulnerabilities
+  - Performance implications
+  - Test coverage adequacy
+- AI review feedback MUST be addressed or explicitly acknowledged
+- Failed CI checks MUST block merge (no manual overrides without documented justification)
+
+**Solo Project Context**:
+- AI-powered PR reviews serve as second pair of eyes for solo developer
+- Automated CI/CD compensates for lack of team code reviews
+- Quality gates enforce discipline without requiring team coordination
+- All automation MUST be maintained and updated as project evolves
+
 ## Development Standards
 
 ### Code Organization
@@ -128,39 +159,56 @@ All code MUST pass linting and formatting checks. Code reviews MUST verify adher
 - All API endpoints MUST have rate limiting
 - All dependencies MUST be kept up to date (security patches)
 
+### CI/CD Standards
+
+- GitHub Actions workflows MUST be version controlled in `.github/workflows/`
+- CI workflow MUST run on pull requests to main branch
+- CI workflow MUST include parallel jobs for speed (tests, linting, build)
+- Test results MUST be reported in PR comments or GitHub Checks
+- Coverage reports MUST be generated and tracked over time
+- Failed workflows MUST provide clear, actionable error messages
+- Secrets and environment variables MUST use GitHub Secrets
+- Deployment workflows MUST require manual approval for production
+- All workflows MUST have timeout limits to prevent runaway builds
+
 ## Quality Gates
 
 All work MUST pass these gates before merging:
 
-**Pre-commit**:
+**Pre-commit** (local development):
 - ✅ ESLint passes
 - ✅ Prettier formatting applied
 - ✅ TypeScript compiles without errors
 
-**Pre-merge**:
+**Pre-merge** (automated via GitHub Actions):
 - ✅ All tests pass (unit + component + E2E)
 - ✅ Code coverage ≥ 80% for new code
+- ✅ ESLint passes with zero warnings
+- ✅ Prettier formatting verified
+- ✅ TypeScript compilation successful
+- ✅ Production build succeeds
 - ✅ Performance budgets not exceeded
 - ✅ Accessibility audit passes
-- ✅ Code review approved by at least one team member
+- ✅ AI code review completed (Claude or equivalent)
 - ✅ All constitution principles verified
+- ✅ Branch protection rules satisfied
 
-**Pre-deploy**:
-- ✅ Build succeeds in production mode
-- ✅ Database migrations tested
-- ✅ Environment variables documented
+**Pre-deploy** (manual verification):
+- ✅ Database migrations tested in staging
+- ✅ Environment variables documented and configured
 - ✅ Monitoring and logging configured
+- ✅ Rollback plan documented
 
 ## Governance
 
-This constitution supersedes all other development practices and conventions. All team members MUST familiarize themselves with these principles and apply them consistently.
+This constitution supersedes all other development practices and conventions. As a solo project, these principles provide structure and discipline equivalent to team-based quality processes.
 
 **Amendment Process**:
-- Proposed amendments MUST be discussed with the entire team
-- Amendments MUST include rationale and impact analysis
+- Proposed amendments MUST include rationale and impact analysis
 - Amendments MUST be documented in the Sync Impact Report
 - Amendments MUST update version number according to semantic versioning
 - All dependent templates MUST be updated to maintain consistency
+- Major amendments SHOULD be discussed with trusted advisors or community
 
 **Versioning Policy**:
 - MAJOR version: Backward-incompatible principle removals or redefinitions
@@ -168,10 +216,10 @@ This constitution supersedes all other development practices and conventions. Al
 - PATCH version: Clarifications, wording improvements, typo fixes
 
 **Compliance Review**:
-- All PRs MUST verify constitutional compliance
-- Quarterly audits MUST check for drift from principles
+- All PRs MUST verify constitutional compliance (automated via CI + AI review)
+- Monthly audits SHOULD check for drift from principles
 - Violations MUST be addressed immediately or exempted with written justification
-- Repeated violations trigger team discussion on principle adjustments
+- Repeated violations trigger constitution review and potential amendment
 
 **Complexity Justification**:
 - Any violation of simplicity principles MUST be documented
@@ -184,4 +232,14 @@ This constitution supersedes all other development practices and conventions. Al
 - Implement tasks in dependency order from tasks.md
 - Validate against quickstart.md before marking features complete
 
-**Version**: 1.0.0 | **Ratified**: 2025-10-17 | **Last Amended**: 2025-10-17
+**Solo Project Workflow**:
+- Create feature branch from main
+- Develop with TDD (write failing tests first)
+- Run local pre-commit checks before push
+- Open PR and wait for automated CI/CD checks
+- Review AI-powered PR feedback from Claude
+- Address any issues identified by automation or AI
+- Merge only after all checks pass
+- Monitor deployment and production metrics
+
+**Version**: 1.1.0 | **Ratified**: 2025-10-17 | **Last Amended**: 2025-10-17

@@ -31,13 +31,14 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-Verify compliance with Vibe Check Constitution v1.0.0:
+Verify compliance with Vibe Check Constitution v1.1.0:
 
 - [ ] **Type Safety First**: All new code will use TypeScript strict mode, no `any` types
 - [ ] **Test-First Development**: Test plan included, tests will be written before implementation
 - [ ] **UX Consistency**: Accessibility requirements identified, interaction patterns consistent
 - [ ] **Performance Standards**: Performance budgets defined for this feature
 - [ ] **Code Quality**: Linting/formatting configured, code review process defined
+- [ ] **Automated CI/CD**: GitHub Actions workflow will enforce all quality gates, AI PR review configured
 
 **Complexity Justification** (if needed):
 - If this feature violates any principle (e.g., adds technical debt), document rationale here

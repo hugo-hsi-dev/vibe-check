@@ -48,6 +48,8 @@ description: "Task list template for feature implementation"
 - [ ] T001 Create project structure per implementation plan
 - [ ] T002 Initialize [language] project with [framework] dependencies
 - [ ] T003 [P] Configure linting and formatting tools
+- [ ] T004 [P] Setup GitHub Actions CI/CD workflow (.github/workflows/ci.yml)
+- [ ] T005 [P] Configure AI-powered PR reviews (Claude or equivalent)
 
 ---
 
@@ -161,13 +163,18 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] TXXX Code quality gates: ESLint zero warnings, Prettier formatted
 - [ ] TXXX Run quickstart.md validation
 
-**Constitution Quality Gates Before Merge**:
+**Constitution Quality Gates Before Merge** (Automated via CI/CD):
 - [ ] All tests passing (unit + component + E2E)
 - [ ] Code coverage ≥ 80% for new code
+- [ ] ESLint passes with zero warnings
+- [ ] Prettier formatting verified
+- [ ] TypeScript compilation successful
+- [ ] Production build succeeds
 - [ ] Performance budgets not exceeded (LCP < 2.5s, FID < 100ms, CLS < 0.1)
 - [ ] Accessibility audit passes
-- [ ] Code review approved
-- [ ] All principles verified
+- [ ] AI code review completed (Claude)
+- [ ] All constitution principles verified
+- [ ] GitHub Actions CI workflow passes
 
 ---
 
