@@ -1,0 +1,5 @@
+# CODEOWNERS file for automatic PR review assignment
+# This ensures all PRs (including Dependabot) automatically assign hugo-hsi-dev as reviewer
+
+# Default owner for everything in the repo
+* @hugo-hsi-dev
