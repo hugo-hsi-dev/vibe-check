@@ -9,5 +9,6 @@ bun.lockb
 /static/
 /drizzle/
 
-# Claude
+# AI
 /.claude/
+/.specify/
